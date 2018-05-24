@@ -1,3 +1,15 @@
-<p>
-  lab6 works!
-</p>
+<div>
+  <div>
+    <label>Amount of elements: </label>
+    <input [(ngModel)]="elements.amount" #amount type="number" max="20" min="1" (focusout)="updateTree()">
+    <div style="color: red" *ngIf="amount.errors">Should an integer value from 1 to 19</div>
+  </div>
+  <div class="distances">
+    <div *ngFor="let row of elements.distances; let i = index">
+      <input *ngFor="let distance of row; let j = index" [(ngModel)]="elements.distances[i][j]">
+    </div>
+  </div>
+</div>
+<div id="svg-wrapper">
+  <svg id="svg"></svg>
+</div>

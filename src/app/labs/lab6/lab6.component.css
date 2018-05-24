@@ -1,0 +1,15 @@
+input {
+    width: 30px;
+}
+
+.distances {
+    padding-top: 15px;
+}
+
+.distances input {
+    margin-right: 5px;
+}
+
+.distances div {
+    padding: 2px 0;
+}
