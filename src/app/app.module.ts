@@ -11,7 +11,8 @@ import { Lab3Component } from './labs/lab3/lab3.component';
 import { FormsModule } from '@angular/forms';
 import { Lab4Component } from './labs/lab4/lab4.component';
 import { Lab5Component } from './labs/lab5/lab5.component';
-import { Lab6Component } from './labs/lab6/lab6.component'
+import { Lab6Component } from './labs/lab6/lab6.component';
+import { Lab7Component } from './labs/lab7/lab7.component'
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { Lab6Component } from './labs/lab6/lab6.component'
     Lab3Component,
     Lab4Component,
     Lab5Component,
-    Lab6Component
+    Lab6Component,
+    Lab7Component
   ],
   imports: [
     RouterModule.forRoot(AppRoutes),
