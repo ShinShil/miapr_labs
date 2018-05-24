@@ -35,6 +35,7 @@ export class Lab6Component implements OnInit, AfterViewInit {
   }
 
   private redrawTree() {
+    console.log(this.elements.treeMaximum);
     this.scaleX = d3.scaleLinear()
       .domain([0, this.elements.amount + 1])
       .range([0, this.svgWidth]);

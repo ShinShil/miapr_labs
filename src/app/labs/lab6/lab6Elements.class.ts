@@ -85,11 +85,15 @@ export class Elements {
                     }
                 }
             }
+            let posX = (this._distancesNodesMap[currI].posX + this._distancesNodesMap[currJ].posX) / 2;
+            if(posX === this._distancesNodesMap[currI].posX) {
+                posX *= 1.25;
+            }
             const newNode: INode = {
                 children: [Object.assign(this._distancesNodesMap[currI]), Object.assign(this._distancesNodesMap[currJ])],
                 distance: currEl,
                 label: this.getNextLabel(),
-                posX: (this._distancesNodesMap[currI].posX + this._distancesNodesMap[currJ].posX) / 2
+                posX: posX
             }
 
             let minDistances = Array.from(distances[currI]);
