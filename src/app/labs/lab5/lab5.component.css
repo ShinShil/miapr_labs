@@ -1,0 +1,14 @@
+h5 {
+    margin: 5px 0;
+}
+input {
+    width: 30px;
+}
+.divider {
+    border-bottom: 1px black solid;
+}
+.define-function span {
+    display: inline-block;
+    text-align: center;
+    width: 90px;
+}

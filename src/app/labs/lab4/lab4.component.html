@@ -1,0 +1,43 @@
+<div>
+  <div class="sizes">
+    <label>Class amount: </label>
+    <input [(ngModel)]="classAmount" (focusout)="onClassAmountChange()">
+    <label>Class size: </label>
+    <input [(ngModel)]="classSize" (focusout)="onClassSizeChange()">
+  </div>
+  <div class="representations">
+    <h5>Representations</h5>
+    <div *ngFor="let representation of representations; let i = index">
+      <h6>Class {{i + 1}}</h6>
+      <div *ngFor="let items of representation; let j = index">
+        <input *ngFor="let item of items; let k = index" [(ngModel)]="representations[i][j][k]">
+      </div>
+      <button (click)="addRepresentation(i)">+</button>
+    </div>
+  </div>
+</div>
+<div>
+  <button (click)="learn()">Learn</button>
+</div>
+<div *ngIf="defineFunctions.length > 0">
+  <h5>Define functions: </h5>
+  <p>
+    <span *ngFor="let defineFunction of defineFunctions;  let i = index">
+      <span>x({{i + 1}}) = </span>
+      <span *ngFor="let weight of defineFunction; let j = index">
+        {{weight}} * x{{j + 1}}
+        <span *ngIf="j != defineFunction.length - 1"> + </span>
+      </span>
+      <br/>
+    </span>
+  </p>
+  <div>
+    <div>
+      <input type="text" *ngFor="let item of definitionRepresentation; let i = index" [(ngModel)]="definitionRepresentation[i]">
+    </div>
+    <div>Belongs to class:
+      <span *ngIf="representationIndex!=null">{{representationIndex + 1}}</span>
+    </div>
+    <button (click)="define()">Define</button>
+  </div>
+</div>

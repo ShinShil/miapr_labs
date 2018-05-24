@@ -1,0 +1,27 @@
+<div>
+  <div *ngFor="let points of entryPoints; let i = index">
+    <h5>Class {{ i + 1 }}</h5>
+    <div *ngFor="let point of points; let j = index">
+      <label>X: </label>
+      <input [(ngModel)]="point.x">
+      <label>Y: </label>
+      <input [(ngModel)]="point.y">
+    </div>
+  </div>
+  <button (click)="setDefineFunction()">Define function</button>
+</div>
+<div *ngIf="defineFunction" class="define-function">
+  <h5>Define function(F(x))</h5>
+  <span class="divider">-({{ defineFunction.c }}) - ({{defineFunction.x1}} * X)</span>
+  <br>
+  <span> {{defineFunction.x2}} + {{defineFunction.x1x2}} * X </span>
+</div>
+<div>
+  <input type="text" #newPointX>
+  <input type="text" #newPointY>
+  <button (click)="addPointToGraphic(newPointX.value, newPointY.value)">Define point</button>
+<div *ngIf="defineFunction">
+  <div id="svg-wrapper">
+    <svg id="svg"></svg>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<div>
+  <label>P1: </label>
+  <input [(ngModel)]="p1">
+  <label>P2: </label>
+  <input [(ngModel)]="p2">
+  <button (click)="build()">Build</button>
+  <span>{{ status }}</span>
+</div>
+<div id="svg-wrapper" style="border: 1px black solid;border-top: none; border-right: none; width: 500px">
+  <svg id="svg"></svg>
+</div>
