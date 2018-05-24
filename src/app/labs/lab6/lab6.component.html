@@ -3,6 +3,16 @@
     <label>Amount of elements: </label>
     <input [(ngModel)]="elements.amount" #amount type="number" max="20" min="1" (focusout)="updateTree()">
     <div style="color: red" *ngIf="amount.errors">Should an integer value from 1 to 19</div>
+    <div>
+      <div>
+        <label>Max:</label>
+        <input type="radio" [(ngModel)]="treeMode" [value]="maxTree" (ngModelChange)="onTreeModeChanged()">
+      </div>
+      <div>
+        <label>Min:</label>
+        <input type="radio" [(ngModel)]="treeMode" [value]="minTree" (ngModelChange)="onTreeModeChanged()">
+      </div>
+    </div>
   </div>
   <div class="distances">
     <div *ngFor="let row of elements.distances; let i = index">

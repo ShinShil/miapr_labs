@@ -18,6 +18,10 @@ export class Lab6Component implements OnInit, AfterViewInit {
   svgHeight = 500;
   fontSize = 16;
   svgMarginBottom = 10;
+  readonly minTree = 1;
+  readonly maxTree = 2;
+  treeMode = 1;
+
   constructor() { }
 
   ngOnInit() {
@@ -34,13 +38,21 @@ export class Lab6Component implements OnInit, AfterViewInit {
     this.redrawTree();
   }
 
+  onTreeModeChanged() {
+    this.redrawTree();
+  }
   private redrawTree() {
-    console.log(this.elements.treeMaximum);
+    let tree: INode = null;
     this.scaleX = d3.scaleLinear()
       .domain([0, this.elements.amount + 1])
       .range([0, this.svgWidth]);
+    if (this.treeMode === this.maxTree) {
+      tree = this.elements.getTreeMaximum();
+    } else {
+      tree = this.elements.getTreeMinimum();
+    }
     this.scaleY = d3.scaleLinear()
-      .domain([0, this.elements.treeMaximum.distance])
+      .domain([0, tree.maxTreeDistance])
       .range([this.svgHeight - this.svgMarginBottom - this.fontSize, this.svgMarginBottom + this.fontSize]);
     D3Utils.recreateSvg(this.svgWidth, this.svgHeight + this.fontSize + this.svgMarginBottom);
     d3.select('svg')
@@ -51,7 +63,7 @@ export class Lab6Component implements OnInit, AfterViewInit {
       .attr('y2', this.svgHeight - this.svgMarginBottom - this.fontSize)
       .attr('stroke', 'black')
       .attr('stroke-width', 2);
-    this.drawLeaf(this.elements.treeMaximum);
+    this.drawLeaf(tree);
   }
 
   private drawLeaf(parent: INode, nodeNumber: number = 1) {
@@ -99,11 +111,11 @@ export class Lab6Component implements OnInit, AfterViewInit {
         this.drawLeaf(parent.children[i], nodeNumber + i + 1);
       }
     } else {
-      this.appendText(parent.posX, 0, parent.label, this.fontSize / 2);
+      this.appendText(parent.posX, parent.distance, parent.label, this.fontSize / 2);
     }
   }
 
-  private appendLine(x1, y1, x2, y2, color = 'red', width = 2, strokeDashArray='none') {
+  private appendLine(x1, y1, x2, y2, color = 'red', width = 2, strokeDashArray = 'none') {
     d3.select('svg')
       .append('line')
       .attr('x1', this.scaleX(x1))

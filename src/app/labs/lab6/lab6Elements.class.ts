@@ -5,11 +5,13 @@ export interface INode {
     children: Array<INode>;
     distance: number;
     posX: number;
+    maxTreeDistance?: number;
 }
 export class Elements {
     private _distances: number[][] = [];
     private _amount: number = 0;
     private _distancesNodesMap: INode[] = [];
+    private firstLeafDistance: number;
     private nextLabelIndex: number = 0;
     private scaleX: any;
     private scaleY: any;
@@ -28,8 +30,37 @@ export class Elements {
         return this._amount;
     }
 
-    public get treeMaximum(): INode {
-        this.getTree((a, b) => a < b);
+    public getTreeMaximum(): INode {
+        let maxValue = Math.max(...this.distances[0])
+        for(let i = 1; i<this.amount; ++i) {
+            maxValue = Math.max(maxValue, ...this.distances[i]);
+        }
+        this._distancesNodesMap = [];
+        for (let i = 0; i < this.amount; ++i) {
+            this._distancesNodesMap.push({
+                label: `x${i + 1}`,
+                children: [],
+                posX: i + 1,
+                distance: maxValue
+            })
+        }
+        this.getTree((a,b) => a < b);
+        this._distancesNodesMap[0].maxTreeDistance = this.firstLeafDistance;
+        return this._distancesNodesMap[0];
+    }
+
+    public getTreeMinimum(): INode {
+        this._distancesNodesMap = [];
+        for (let i = 0; i < this.amount; ++i) {
+            this._distancesNodesMap.push({
+                label: `x${i + 1}`,
+                children: [],
+                posX: i + 1,
+                distance: 0
+            })
+        }
+        this.getTree((a, b) => a > b);
+        this._distancesNodesMap[0].maxTreeDistance = this._distancesNodesMap[0].distance;
         return this._distancesNodesMap[0];
     }
 
@@ -37,7 +68,6 @@ export class Elements {
         this._amount = 3;
         this.randomizeDistances();
         this.setDebugData();
-        const tree = this.treeMaximum;
     }
     public updateTree() {
         this.randomizeDistances();
@@ -50,17 +80,8 @@ export class Elements {
             [0.5, 1, 0, 2.5],
             [2, 0.6, 2.5, 0],
         ]
-        this._distancesNodesMap = [];
-        for (let i = 0; i < this.amount; ++i) {
-            this._distancesNodesMap.push({
-                label: `x${i + 1}`,
-                children: [],
-                posX: i + 1,
-                distance: 0
-            })
-        }
     }
-    private getTree(compare: (n1: number, n2: number) => boolean) {
+    private getTree(compare: (currEl: number, el: number) => boolean) {
         let currI = 0;
         let currJ = 0;
         let distances = Array.from(this.distances);
@@ -77,13 +98,16 @@ export class Elements {
             for (let i = 0; i < this.amount; ++i) {
                 for (let j = 0; j < this.amount; ++j) {
                     if (j !== i) {
-                        if (currEl > distances[i][j]) {
+                        if (compare(currEl,distances[i][j])) {
                             currEl = distances[i][j];
                             currI = i;
                             currJ = j;
                         }
                     }
                 }
+            }
+            if(tAmount == this.amount) {
+                this.firstLeafDistance = currEl;
             }
             let posX = (this._distancesNodesMap[currI].posX + this._distancesNodesMap[currJ].posX) / 2;
             if(posX === this._distancesNodesMap[currI].posX) {
@@ -101,7 +125,7 @@ export class Elements {
                 if (i === currI || i === currJ) {
                     for (let j = 0; j < this.amount; ++j) {
                         if (i !== j) {
-                            if (minDistances[j] > distances[i][j]) {
+                            if (compare(minDistances[j], distances[i][j])) {
                                 minDistances[j] = distances[i][j];
                             }
                         }
@@ -136,15 +160,8 @@ export class Elements {
     private randomizeDistances() {
         if (this.amount && this.amount < 20 && this.amount > 0) {
             this._distances = [];
-            this._distancesNodesMap = [];
             for (let i = 0; i < this.amount; ++i) {
                 this.distances.push([]);
-                this._distancesNodesMap.push({
-                    label: `x${i + 1}`,
-                    children: [],
-                    distance: 0,
-                    posX: i + 1
-                });
                 for (let j = 0; j < this.amount; ++j) {
                     let nextNumber = 0;
                     if (i === j) {
