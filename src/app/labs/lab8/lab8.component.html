@@ -1,3 +1,19 @@
-<p>
-  lab8 works!
-</p>
+<div>
+  <h5>Терминальные цепочки</h5>
+  <div *ngFor="let term of terms; let i = index" class="inputTerm">
+    <input [(ngModel)]="terms[i]">
+    <button (click)="removeTerm(i)">X</button>
+  </div>
+  <div>
+    <input type="text" #newTerm>
+    <button (click)="addTerm(newTerm.value)">Add Term</button>
+  </div>
+  <div>
+    <label>Amount: </label>
+    <input #amount type="number"/>
+    <button (click)="generate(amount.value)">Generate</button>
+  </div>
+</div>
+<div>
+  <h5>Generated result</h5>
+</div>
