@@ -16,10 +16,10 @@ export class Lab8Component implements OnInit {
     'bbb',
     'cb'
   ]
+  result: string = '';
   constructor() { }
 
   ngOnInit() {
-    this.generate(3);
   }
 
   addTerm(newTerm) {
@@ -31,9 +31,8 @@ export class Lab8Component implements OnInit {
   }
 
   generate(amount: number) {
-    console.log(amount);
     const grammatic = new Lab8Grammatik();
-    grammatic.generate(3, this.terms);
+    this.result = grammatic.generate(amount, this.terms);
   }
 
   private createGrammatik() {

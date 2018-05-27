@@ -1,4 +1,6 @@
 import { NumberUtils } from "../../number.util";
+import { forOwn, values } from 'lodash';
+import { D3Utils } from "../../d3.utils";
 
 interface ILab8Node {
     word: string;
@@ -6,6 +8,7 @@ interface ILab8Node {
     next: ILab8Node;
     parents: ILab8Node[];
     recursiveFunc: boolean;
+    getVal?(): string;
 }
 
 export class Lab8Grammatik {
@@ -32,17 +35,14 @@ export class Lab8Grammatik {
             this.addToTree(terms[i]);
         }
         this.updateRecursiveState();
-        console.log(this.existingNodes);
+        this.cleanTheTree();
+        const rules = values(this.existingNodes);
+        this.res = '';
         for (let i = 0; i < amount; ++i) {
-
+            let index = NumberUtils.getRandomNumber(0, rules.length - 1);
+            this.res += `${rules[index].getVal()} `;
         }
         return this.res;
-    }
-
-    private generateWord(): string {
-        const tailIndex = NumberUtils.getRandomNumber(0, this.tails.length - 1);
-        const notTailIndex = NumberUtils.getRandomNumber(0, this.notTails.length - 1);
-        return '';
     }
 
     private addToTree(term: string, parent: ILab8Node = null): ILab8Node {
@@ -53,18 +53,21 @@ export class Lab8Grammatik {
                 letter: term.substr(0, 1),
                 parents: [],
                 word: term,
-                recursiveFunc: false
+                recursiveFunc: false,
             } as any;
             if (parent) {
                 newItem.parents.push(parent);
             }
             const existingNewNode = this.existingNodes[term.substr(1)];
+            newItem.getVal = () => {
+                return newItem.next ? newItem.letter + newItem.next.getVal() : newItem.letter;
+            }
             newItem.next = existingNewNode || this.addToTree(term.substr(1), newItem);
             if (existingNewNode) {
-                    existingNewNode.parents.push(newItem);
+                existingNewNode.parents.push(newItem);
             }
 
-            if(newItem.next == null) {
+            if (newItem.next == null) {
                 this.terminalNodes.push(newItem);
             }
             this.existingNodes[term] = newItem;
@@ -79,18 +82,34 @@ export class Lab8Grammatik {
         nodes = nodes || this.terminalNodes;
         for (let node of nodes) {
             for (let i = 0; i < node.parents.length; ++i) {
-                let recursive = node.parents[i].letter === node.letter;
-                let max = 3;
-                while (node.parents[i].letter === node.letter && max-- > 1) {
-                    for (let grandParent of node.parents[i].parents) {
-                        grandParent.next = node;
-                        node.parents[i] = grandParent;
-                        delete this.existingNodes[node.parents[i].word];
+                let max = 5;
+                for (let j = 0; j < node.parents[i].parents.length; ++j) {
+                    if (node.parents[i].parents[j].letter === node.parents[i].letter && node.parents[i].parents[j].parents.length !== 0) {
+                        for (let k = 0; k < node.parents[i].parents[j].parents.length; ++k) {
+                            node.parents[i].parents[j].parents[k].next = node.parents[i];
+                            node.parents[i].parents.push(node.parents[i].parents[j].parents[k]);
+                        }
+                        node.parents[i].getVal = () => {
+                            return node.parents[i].letter.repeat(NumberUtils.getRandomNumber(0, 7)) + node.getVal();
+                        }
+                        node.parents[i].recursiveFunc = true;
+                        node.parents[i].parents.splice(j, 1);
+                        --j;
                     }
                 }
-                node.recursiveFunc = node.recursiveFunc || recursive;
                 this.updateRecursiveState(node.parents);
             }
         }
+    }
+
+    private cleanTheTree() {
+        const uniqChars = [];
+        forOwn(this.existingNodes, (node, key) => {
+            if (node.parents.length > 0 || uniqChars.indexOf(node.letter) !== -1) {
+                delete this.existingNodes[key];
+            } else {
+                uniqChars.push(node.letter);
+            }
+        });
     }
 }
