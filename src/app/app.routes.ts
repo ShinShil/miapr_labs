@@ -11,13 +11,13 @@ import { Lab9Component } from './labs/lab9/lab9.component';
 
 export const AppRoutes: Routes = [
     { path: '', pathMatch: 'full', component: Lab1Component },
-    { path: 'lab1', component: Lab1Component },
-    { path: 'lab2', component: Lab2Component },
+    { path: 'ksrednih', component: Lab1Component },
+    { path: 'maximin', component: Lab2Component },
     { path: 'lab3', component: Lab3Component },
     { path: 'lab4', component: Lab4Component },
-    { path: 'lab5', component: Lab5Component },
-    { path: 'lab6', component: Lab6Component },
-    { path: 'lab7', component: Lab7Component },
+    { path: 'potentials', component: Lab5Component },
+    { path: 'hierarchy', component: Lab6Component },
+    { path: 'syntax', component: Lab7Component },
     { path: 'lab8', component: Lab8Component },
     { path: 'lab9', component: Lab9Component }
 ];

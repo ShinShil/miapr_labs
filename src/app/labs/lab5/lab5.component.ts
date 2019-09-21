@@ -99,12 +99,12 @@ export class Lab5Component implements OnInit {
       }
     }
     this.defineFunction = currPotentialFunc;
-    this.drawPotentialFunc();
+    setTimeout(this.drawPotentialFunc.bind(this), 0);
   }
 
   private recreateSvg() {
     d3.select('#svg-wrapper').html('<svg id="svg"><svg>');
-    d3.select("#svg")
+    d3.select('#svg')
       .attr('width', this.svgWidth)
       .attr('height', this.svgHeight);
   }
@@ -155,7 +155,7 @@ export class Lab5Component implements OnInit {
     }
     this.entryPoints.forEach((points) => {
       points.forEach(p => this.addPointToGraphic(p.x, p.y))
-    })
+    });
   }
 
   private addPointToGraphic(x: number, y: number) {
@@ -183,7 +183,7 @@ export class Lab5Component implements OnInit {
       x1: func1.x1 + func2.x1,
       x2: func1.x2 + func2.x2,
       x1x2: func1.x1x2 + func2.x1x2
-    }
+    };
   }
 
   private diffKoeffsPotentialFunction(func1: IDefineFunction, func2: IDefineFunction) {
@@ -192,7 +192,7 @@ export class Lab5Component implements OnInit {
       x1: func1.x1 - func2.x1,
       x2: func1.x2 - func2.x2,
       x1x2: func1.x1x2 - func2.x1x2
-    }
+    };
   }
 
   private countFunction(x1: number, x2: number, func: IDefineFunction) {

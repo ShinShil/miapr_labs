@@ -39,7 +39,7 @@ export class Lab8Grammatik {
         const rules = values(this.existingNodes);
         this.res = '';
         for (let i = 0; i < amount; ++i) {
-            let index = NumberUtils.getRandomNumber(0, rules.length - 1);
+            const index = NumberUtils.getRandomNumber(0, rules.length - 1);
             this.res += `${rules[index].getVal()} `;
         }
         return this.res;
@@ -47,7 +47,7 @@ export class Lab8Grammatik {
 
     private addToTree(term: string, parent: ILab8Node = null): ILab8Node {
         let newItem = null;
-        let existingNode = this.existingNodes[term];
+        const existingNode = this.existingNodes[term];
         if (!existingNode && term) {
             newItem = {
                 letter: term.substr(0, 1),
@@ -80,9 +80,9 @@ export class Lab8Grammatik {
 
     private updateRecursiveState(nodes: ILab8Node[] = null) {
         nodes = nodes || this.terminalNodes;
-        for (let node of nodes) {
+        for (const node of nodes) {
             for (let i = 0; i < node.parents.length; ++i) {
-                let max = 5;
+                const max = 5;
                 for (let j = 0; j < node.parents[i].parents.length; ++j) {
                     if (node.parents[i].parents[j].letter === node.parents[i].letter && node.parents[i].parents[j].parents.length !== 0) {
                         for (let k = 0; k < node.parents[i].parents[j].parents.length; ++k) {

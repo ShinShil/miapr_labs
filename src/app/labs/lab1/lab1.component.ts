@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import {Component, OnInit, AfterViewInit} from '@angular/core';
 
 import *  as d3 from 'd3';
 
@@ -15,7 +15,7 @@ export class Lab1Component implements OnInit, AfterViewInit {
   pointsInRaw = this.pointsAmount / this.svgHeight;
   status: string;
   playInterval: any;
-  centroidsAmount: number = 6;
+  centroidsAmount = 6;
 
   dataPoints: number[][] = [];
   centroids: Array<{
@@ -30,7 +30,7 @@ export class Lab1Component implements OnInit, AfterViewInit {
     FOURTH: 4,
     FIFTH: 5,
     SIXTH: 6
-  }
+  };
 
   private centroidsUpdated = true;
 
@@ -47,7 +47,9 @@ export class Lab1Component implements OnInit, AfterViewInit {
       let pointsAmount = 0;
       for (let j = 0, pointMarker = 0; j < this.svgWidth; ++j, ++pointMarker) {
         const val = pointMarker === pointMarkerActivateIndex ? this.dataVals.FIRST : this.dataVals.EMPTY;
-        if (val === 1)++pointsAmount;
+        if (val === 1) {
+          ++pointsAmount;
+        }
         pointsRaw.push(val);
         if (pointMarker === this.pointRadius) {
           pointMarker = 0;
@@ -64,7 +66,7 @@ export class Lab1Component implements OnInit, AfterViewInit {
       if (ypos > this.svgHeight) {
         ypos = 30;
       }
-      this.centroids.push({ x: xpos, y: ypos });
+      this.centroids.push({x: xpos, y: ypos});
     }
     this.drawPointsAndCentroids();
   }
@@ -86,13 +88,15 @@ export class Lab1Component implements OnInit, AfterViewInit {
       }
     }, 2000);
   }
+
   public stop() {
     clearInterval(this.playInterval);
   }
+
   private drawPointsAndCentroids() {
-    d3.select("#svg")
+    d3.select('#svg')
       .attr('width', this.svgWidth * this.pointRadius * 2)
-      .attr('height', this.svgHeight * this.pointRadius * 2)
+      .attr('height', this.svgHeight * this.pointRadius * 2);
     console.log('before draw loop');
     for (let i = 0; i < this.svgHeight; ++i) {
       for (let j = 0; j < this.svgWidth; ++j) {
@@ -131,7 +135,7 @@ export class Lab1Component implements OnInit, AfterViewInit {
         let currCentroid = 0;
         if (this.dataPoints[i][j] !== this.dataVals.EMPTY) {
           for (let k = 0; k < this.centroidsAmount; ++k) {
-            const dist = Math.round(Math.sqrt(Math.pow(this.centroids[k].y - i, 2) + Math.pow(this.centroids[k].x - j, 2)))
+            const dist = Math.round(Math.sqrt(Math.pow(this.centroids[k].y - i, 2) + Math.pow(this.centroids[k].x - j, 2)));
             if (dist < minimum) {
               minimum = dist;
               currCentroid = k;
@@ -152,9 +156,9 @@ export class Lab1Component implements OnInit, AfterViewInit {
       totalPoints: number,
       totalX: number,
       totalY: number
-    }> = []
+    }> = [];
     for (let i = 0; i < this.centroidsAmount; ++i) {
-      centroids.push({ totalPoints: 0, totalX: 0, totalY: 0 });
+      centroids.push({totalPoints: 0, totalX: 0, totalY: 0});
     }
     for (let i = 0; i < this.svgHeight; ++i) {
       for (let j = 0; j < this.svgWidth; ++j) {
@@ -167,17 +171,17 @@ export class Lab1Component implements OnInit, AfterViewInit {
       }
     }
     let changed = false;
-    for(let i = 0; i<this.centroidsAmount; ++i) {
+    for (let i = 0; i < this.centroidsAmount; ++i) {
       const newX = centroids[i].totalX / centroids[i].totalPoints;
       const newY = centroids[i].totalY / centroids[i].totalPoints;
-      if(this.centroids[i].x !== newX || this.centroids[i].y !== newY) {
+      if (this.centroids[i].x !== newX || this.centroids[i].y !== newY) {
         changed = true;
       }
       this.centroids[i].x = newX;
       this.centroids[i].y = newY;
       d3.select(`#svg .centroid${i + 1}`)
         .attr('x', this.centroids[i].x * 2 * this.pointRadius)
-        .attr('y', this.centroids[i].y * 2 * this.pointRadius)
+        .attr('y', this.centroids[i].y * 2 * this.pointRadius);
     }
     this.centroidsUpdated = true;
     this.status = changed ? 'centroids has been resetted' : 'stop';
@@ -196,6 +200,6 @@ export class Lab1Component implements OnInit, AfterViewInit {
       'black',
       'blue',
       'orange'
-    ][dataVal]
+    ][dataVal];
   }
 }

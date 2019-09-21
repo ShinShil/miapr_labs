@@ -15,15 +15,15 @@ export class Lab8Component implements OnInit {
     'cab',
     'bbb',
     'cb'
-  ]
-  result: string = '';
+  ];
+  result = '';
   constructor() { }
 
   ngOnInit() {
   }
 
   addTerm(newTerm) {
-    this.terms.push(newTerm)
+    this.terms.push(newTerm);
   }
 
   removeTerm(index: number) {

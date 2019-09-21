@@ -2,7 +2,6 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Elements, INode } from './lab6Elements.class';
 import { D3Utils } from '../../d3.utils';
 import * as d3 from 'd3';
-import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-lab6',
